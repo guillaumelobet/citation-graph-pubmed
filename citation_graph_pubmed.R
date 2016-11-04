@@ -23,8 +23,6 @@ pmids <- c(27352932,
            21771915,
            20453027)
 
-pmids_ch <- paste(pmids, collapse=",")
-
 citegraph <- NULL
 for(pmid in pmids){
     # Get more info with the pmid id
@@ -36,17 +34,13 @@ for(pmid in pmids){
                     "&report=uilist&format=text&dispmax=200", sep="")
       f <- file(path)
       data <- readLines(f, warn = F)
-      data <- gsub("&lt;", "<", data)
-      data <- gsub("&gt;", ">", data)
       citing <-strsplit(xmlToList(xmlParse(data, asText = T))[1], "\n")[[1]]
       close(f)
       
       # Then we create a table containing ll these pmids
       if(length(citing) < 200){
         for(pm in citing){
-          method = 0
-          if(grepl(pm, pmids_ch)) method=1
-          citegraph <- rbind(citegraph, data.frame(pmid=as.numeric(pmid), citing=as.numeric(pm), is_method = method))
+          citegraph <- rbind(citegraph, data.frame(pmid=as.numeric(pmid), citing=as.numeric(pm)))
         }
       }
       
