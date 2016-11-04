@@ -23,6 +23,9 @@ pmids <- c(27352932,
            21771915,
            20453027)
 
+pmids_ch <- paste(pmids, collapse=",")
+
+
 citegraph <- NULL
 for(pmid in pmids){
     # Get more info with the pmid id
@@ -66,6 +69,4 @@ for(i in 1:nrow(nodes)){
 }
 
 edges <- data.frame(from = citegraph[,2], to = citegraph[,1])
-network <- visNetwork(nodes, edges, width = "100%")
-
-visSave(network, file = "~/Desktop/network.html")
+visNetwork(nodes, edges, width = "100%")
